@@ -60,7 +60,14 @@
   --text: #15151f;
   --text-soft: #44465a;
   --text-mute: #74768a;
-  --code-bg: #0d0d18;
-  --aurora-opacity: .5;
+  --code-bg: #0b0b14;
+  --aurora-opacity: .4;
   --grid-color: rgba(10, 10, 25, .04);
+
+  // Accents overridden for WCAG accessibility (contrast ratio >= 4.5:1)
+  --accent: #5c3cd3;
+  --accent-2: #0284c7;
+  --accent-3: #db2777;
+  --accent-grad: linear-gradient(120deg, #5c3cd3 0%, #0284c7 100%);
+  --accent-grad-soft: linear-gradient(120deg, rgba(92, 60, 211, .08), rgba(2, 132, 199, .08));
 }

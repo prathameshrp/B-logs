@@ -121,16 +121,28 @@
         tocList.appendChild(a);
       });
       var links = tocList.querySelectorAll('a');
-      var spy = new IntersectionObserver(function (entries) {
-        entries.forEach(function (e) {
-          if (e.isIntersecting) {
-            links.forEach(function (l) {
-              l.classList.toggle('is-active', l.getAttribute('href') === '#' + e.target.id);
-            });
+      function updateActiveTOC() {
+        var scrollPos = window.scrollY + 120;
+        var activeHeading = null;
+        for (var i = 0; i < headings.length; i++) {
+          var h = headings[i];
+          if (h.offsetTop <= scrollPos) {
+            activeHeading = h;
+          } else {
+            break;
           }
-        });
-      }, { rootMargin: '-80px 0px -70% 0px' });
-      headings.forEach(function (h) { spy.observe(h); });
+        }
+        if (!activeHeading && headings.length > 0) {
+          activeHeading = headings[0];
+        }
+        if (activeHeading) {
+          links.forEach(function (l) {
+            l.classList.toggle('is-active', l.getAttribute('href') === '#' + activeHeading.id);
+          });
+        }
+      }
+      window.addEventListener('scroll', updateActiveTOC, { passive: true });
+      updateActiveTOC();
     }
   }
 

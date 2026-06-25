@@ -1,11 +1,15 @@
-<script src="{{ '/assets/js/modules/theme.js' | relative_url }}" defer></script>
-<script src="{{ '/assets/js/modules/navbar.js' | relative_url }}" defer></script>
-<script src="{{ '/assets/js/modules/animation.js' | relative_url }}" defer></script>
-<script src="{{ '/assets/js/modules/skeleton.js' | relative_url }}" defer></script>
-<script src="{{ '/assets/js/modules/search.js' | relative_url }}" defer></script>
-<script src="{{ '/assets/js/modules/graph.js' | relative_url }}" defer></script>
-<script src="{{ '/assets/js/modules/cursor.js' | relative_url }}" defer></script>
-<script src="{{ '/assets/js/modules/sound.js' | relative_url }}" defer></script>
-<script src="{{ '/assets/js/modules/easter.js' | relative_url }}" defer></script>
-<script src="{{ '/assets/js/modules/code.js' | relative_url }}" defer></script>
-<script src="{{ '/assets/js/main.js' | relative_url }}" defer></script>
+{%- assign cache_buster = site.time | date: "%s" -%}
+<script src="{{ '/assets/js/modules/theme.js' | relative_url }}?v={{ cache_buster }}" defer></script>
+<script src="{{ '/assets/js/modules/navbar.js' | relative_url }}?v={{ cache_buster }}" defer></script>
+<script src="{{ '/assets/js/modules/animation.js' | relative_url }}?v={{ cache_buster }}" defer></script>
+<script src="{{ '/assets/js/modules/skeleton.js' | relative_url }}?v={{ cache_buster }}" defer></script>
+<script src="{{ '/assets/js/modules/search.js' | relative_url }}?v={{ cache_buster }}" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" defer></script>
+<script src="{{ '/assets/js/modules/graph.js' | relative_url }}?v={{ cache_buster }}" defer></script>
+<script src="{{ '/assets/js/modules/cursor.js' | relative_url }}?v={{ cache_buster }}" defer></script>
+<script src="{{ '/assets/js/modules/sound.js' | relative_url }}?v={{ cache_buster }}" defer></script>
+<script src="{{ '/assets/js/modules/easter.js' | relative_url }}?v={{ cache_buster }}" defer></script>
+<script src="{{ '/assets/js/modules/code.js' | relative_url }}?v={{ cache_buster }}" defer></script>
+{% comment %}Scroll-driven camera control{% endcomment %}
+<script src="{{ '/assets/js/modules/scroll-graph.js' | relative_url }}?v={{ cache_buster }}" defer></script>
+

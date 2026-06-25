@@ -10,7 +10,9 @@
       {%- if post.cover -%}
         <img src="{{ post.cover | relative_url }}" alt="" loading="lazy" class="post-card__img">
       {%- else -%}
-        <div class="post-card__gradient" data-gradient="{{ post.title | size | modulo: 4 }}"></div>
+        <div class="post-card__gradient" data-gradient="{{ post.title | size | modulo: 4 }}">
+          <div class="post-card__media-hud"></div>
+        </div>
       {%- endif -%}
       <div class="post-card__media-skeleton" data-skeleton></div>
     </div>

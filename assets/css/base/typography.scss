@@ -40,47 +40,113 @@ a.chip:hover, .chip:hover { transform: translateY(-2px); border-color: var(--bor
 
 // ── Long-form prose ────────────────────────────────────────────
 .prose {
-  font-size: 1.05rem;
+  font-size: 1.12rem;
+  line-height: 1.78;
   color: var(--text-soft);
 
-  > * + * { margin-top: 1.25rem; }
-  h2 { margin-top: 2.6rem; color: var(--text); scroll-margin-top: 90px; }
-  h3 { margin-top: 2rem; color: var(--text); scroll-margin-top: 90px; }
-  h2 + p, h3 + p { margin-top: .8rem; }
+  > * + * { margin-top: 1.5rem; }
+  
+  h2 {
+    font-size: 1.68rem;
+    margin-top: 3.2rem;
+    margin-bottom: 1.2rem;
+    color: var(--text);
+    scroll-margin-top: 90px;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 0.5rem;
+  }
+  
+  h3 {
+    font-size: 1.34rem;
+    margin-top: 2.4rem;
+    margin-bottom: 0.9rem;
+    color: var(--text);
+    scroll-margin-top: 90px;
+  }
+  
+  h2 + p, h3 + p { margin-top: .9rem; }
 
-  a { color: var(--accent-2); text-decoration: underline; text-underline-offset: 3px; text-decoration-color: rgba(34,211,238,.4); }
-  a:hover { text-decoration-color: var(--accent-2); }
+  a {
+    color: var(--accent-2);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    text-decoration-color: color-mix(in srgb, var(--accent-2) 30%, transparent);
+    transition: text-decoration-color .2s var(--ease), color .2s var(--ease);
+    &:hover {
+      text-decoration-color: var(--accent-2);
+    }
+  }
 
   strong { color: var(--text); }
 
-  ul, ol { padding-left: 1.3rem; color: var(--text-soft); }
+  ul, ol { padding-left: 1.4rem; color: var(--text-soft); }
   ul li { list-style: none; position: relative; padding-left: .2rem; }
   ul li::before { content: ""; position: absolute; left: -1rem; top: .65em; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
   ol { list-style: decimal; }
-  li + li { margin-top: .5rem; }
+  li + li { margin-top: .6rem; }
 
   blockquote {
-    border-left: 3px solid var(--accent);
-    padding: .4rem 0 .4rem 1.2rem; margin-left: 0;
-    color: var(--text); font-style: italic;
-    background: linear-gradient(90deg, var(--surface), transparent);
-    border-radius: 0 8px 8px 0;
+    border-left: 4px solid var(--accent);
+    padding: 1.1rem 1.6rem;
+    margin: 1.8rem 0;
+    color: var(--text);
+    font-size: 1.16rem;
+    font-style: italic;
+    background: color-mix(in srgb, var(--accent) 5%, var(--surface));
+    border-radius: 0 12px 12px 0;
+    
+    p {
+      color: var(--text);
+      line-height: 1.65;
+    }
   }
 
-  img { border-radius: var(--radius); border: 1px solid var(--border); margin-block: 1.5rem; }
+  img { border-radius: var(--radius); border: 1px solid var(--border); margin-block: 1.8rem; }
 
-  hr { border: none; height: 1px; background: var(--border); margin-block: 2.5rem; }
+  hr { border: none; height: 1px; background: var(--border); margin-block: 2.8rem; }
 
   // inline code
   :not(pre) > code {
-    background: var(--surface-2); color: var(--accent-2);
-    padding: .15em .45em; border-radius: 6px; font-size: .88em;
+    background: var(--surface-2);
+    color: var(--accent-2);
+    padding: .18em .42em;
+    border-radius: 6px;
+    font-size: .88em;
     border: 1px solid var(--border);
+    font-family: var(--font-mono);
   }
 
-  table { width: 100%; border-collapse: collapse; font-size: .95rem; }
-  th, td { padding: .6rem .8rem; border-bottom: 1px solid var(--border); text-align: left; }
-  th { color: var(--text); font-family: var(--font-display); }
+  table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-size: .95rem;
+    margin-block: 2rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    
+    th, td {
+      padding: .75rem 1rem;
+      border-bottom: 1px solid var(--border);
+      border-right: 1px solid var(--border);
+      text-align: left;
+      &:last-child { border-right: none; }
+    }
+    
+    tr:last-child td { border-bottom: none; }
+    
+    th {
+      background: var(--surface-2);
+      color: var(--text);
+      font-family: var(--font-display);
+      font-weight: 600;
+    }
+    
+    tr:nth-child(even) td {
+      background: color-mix(in srgb, var(--bg-soft) 40%, transparent);
+    }
+  }
 }
 
 kbd {

@@ -285,26 +285,7 @@
     }
   }
 
-  if (detailsNext) {
-    detailsNext.addEventListener('click', function () {
-      if (!currentActivePost) return;
-      var idx = postsList.indexOf(currentActivePost);
-      var nextIdx = (idx + 1) % postsList.length;
-      var nextPost = postsList[nextIdx];
-      if (nextPost) {
-        var progress = 0.12 + (nextIdx / postsList.length) * 0.76;
-        var wrapper = document.getElementById('timeline-wrapper');
-        if (wrapper) {
-          var trackHeight = wrapper.offsetHeight - window.innerHeight;
-          var wrapperTop = window.scrollY + wrapper.getBoundingClientRect().top;
-          window.scrollTo({
-            top: wrapperTop + progress * trackHeight,
-            behavior: 'smooth'
-          });
-        }
-      }
-    });
-  }
+
 
   // Attach menu click handlers
   menuButtons.forEach(function (btn) {

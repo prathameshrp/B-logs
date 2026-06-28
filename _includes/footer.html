@@ -10,22 +10,22 @@
 
     <nav class="footer__nav" aria-label="Footer">
       {%- for item in site.data.navigation -%}
-        <a href="{{ item.url | relative_url }}">{{ item.name }}</a>
+      <a href="{{ item.url | relative_url }}">{{ item.name }}</a>
       {%- endfor -%}
     </nav>
 
     <div class="footer__social">
       {%- for s in site.data.social -%}
-        {%- if s.url and s.url != "" -%}
-          <a href="{{ s.url }}" class="icon-btn" aria-label="{{ s.name }}" target="_blank" rel="noopener">
-            {% include icon.html name=s.icon %}
-          </a>
-        {%- endif -%}
+      {%- if s.url and s.url != "" -%}
+      <a href="{{ s.url }}" class="icon-btn" aria-label="{{ s.name }}" target="_blank" rel="noopener">
+        {% include icon.html name=s.icon %}
+      </a>
+      {%- endif -%}
       {%- endfor -%}
     </div>
   </div>
   <div class="footer__bottom">
-    <span>&copy; {{ 'now' | date: "%Y" }} {{ site.author.name }}. Built with Jekyll, deployed on GitHub Pages.</span>
+    <span>&copy; {{ 'now' | date: "%Y" }} {{ site.author.name }}. Built with 💜</span>
     <span class="footer__build">
       <span class="footer__build-dot"></span>
       last deployed {{ site.time | date: "%b %-d, %Y · %H:%M %Z" }}

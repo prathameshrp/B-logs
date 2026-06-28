@@ -1,6 +1,6 @@
 {%- comment -%}
-  Static-site friendly contact form. Uses Formspree (set form_id in page
-  front matter). Falls back to a mailto link if not configured.
+Static-site friendly contact form. Uses Formspree (set form_id in page
+front matter). Falls back to a mailto link if not configured.
 {%- endcomment -%}
 {%- if include.form_id and include.form_id != "" -%}
 <form class="contact-form" action="https://formspree.io/f/{{ include.form_id }}" method="POST" data-contact-form>
@@ -25,7 +25,7 @@
 </form>
 {%- else -%}
 <div class="contact-fallback">
-  <p>Drop me a line — I usually reply within a day.</p>
+  <p>Drop me a line, I regularly check each and every message.</p>
   <a class="btn btn--primary" href="mailto:{{ site.author.email }}">
     {% include icon.html name="mail" %} {{ site.author.email }}
   </a>

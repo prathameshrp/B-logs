@@ -7,37 +7,32 @@ hero:
     - "developer tools."
   intro: >-
     I'm a software engineer who likes turning messy problems into simple,
-    fast, well-tested software — and writing about it along the way.
+    fast, well-tested software, and writing about it along the way.
   terminal:
     - "$ whoami"
-    - "prathamesh — software engineer"
+    - "prathamesh, software engineer"
     - "$ cat focus.txt"
     - "backend · web · developer-experience"
     - "$ ./start --read-the-blog"
 
 stats:
-  - value: 5
+  - value: 1
     suffix: "+"
     label: "Years writing code"
-  - value: 40
-    suffix: "+"
-    label: "Articles published"
-  - value: 12
+  - value: 2
+    suffix: ""
+    label: "Research paper published"
+  - value: 4
     suffix: "+"
     label: "Side projects"
-  - value: 100
-    suffix: "%"
-    label: "Curiosity"
+  - value: 2
+    suffix: ""
+    label: "Patent Granted"
 
 # Highlighted skills (rendered as animated chips)
 stack:
+  - Java
   - JavaScript
   - TypeScript
-  - Python
-  - Go
-  - React
+  - SQL
   - Node.js
-  - PostgreSQL
-  - Docker
-  - AWS
-  - Kubernetes

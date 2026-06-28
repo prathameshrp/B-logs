@@ -5,25 +5,16 @@ subtitle: Engineer, writer, and perpetual tinkerer.
 permalink: /about/
 ---
 
-Hey, I'm **Prathamesh** — a software engineer who enjoys turning fuzzy problems
-into fast, reliable, well-tested software. This site is where I think out loud
+Hey, I'm **Prathamesh**, a software engineer & a student who enjoys solving problems that trouble developers. I automate my task and love to let my computer handle things for me. This site is where I think out loud
 about the things I build and learn.
 
 ## What I write about
 
-- **Systems & backend** — APIs, data modeling, performance, and the boring-but-important stuff that keeps things running.
-- **Web & frontend** — building interfaces that feel fast and look good without a mountain of JavaScript.
-- **Developer experience** — tooling, automation, and workflows that make the day-to-day better.
+- **Systems & backend** - APIs, data modeling, performance, and the boring-but-important stuff that keeps things running.
+- **Web & frontend** - building interfaces that feel fast and look good without a mountain of JavaScript.
+- **Developer experience** - tooling, automation, and workflows that make the day-to-day better.
+- **Personal experience** - About life and everything in general, this is also my public journal.
 
-## How this site works
-
-Every post is just a Markdown file dropped into a folder. Push to `main`, and a
-GitHub Actions pipeline builds and deploys it automatically — no manual steps.
-Code snippets are syntax-highlighted, copyable, and some are even **runnable**
-right in the page.
-
-> Build in public, learn in public. The best way to understand something is to
-> explain it to someone else.
 
 ## Elsewhere
 

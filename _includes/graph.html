@@ -1,11 +1,11 @@
 {%- comment -%}
-  Constellation graph: posts = star nodes, tags = hub nodes.
-  Each post links to each of its tags, so posts sharing a tag cluster together.
-  Data is emitted as JSON; the canvas engine in graph.js renders + simulates it.
+Constellation graph: posts = star nodes, tags = hub nodes.
+Each post links to each of its tags, so posts sharing a tag cluster together.
+Data is emitted as JSON; the canvas engine in graph.js renders + simulates it.
 {%- endcomment -%}
 {%- assign all_tags = "" | split: "" -%}
 {%- for post in site.posts -%}
-  {%- for t in post.tags -%}{%- assign all_tags = all_tags | push: t -%}{%- endfor -%}
+{%- for t in post.tags -%}{%- assign all_tags = all_tags | push: t -%}{%- endfor -%}
 {%- endfor -%}
 {%- assign all_tags = all_tags | uniq | sort -%}
 
@@ -17,7 +17,7 @@
         <div class="diamond-pulse-inner"></div>
         <div class="diamond-center">◇</div>
       </div>
-      <div class="loader-hud-label">// ANIMUS SYNC SIMULATOR v2.08 //</div>
+      <div class="loader-hud-label">// Loading... //</div>
       <div class="loader-hud-sub" data-loader-status>ACCESSING MEMORY CORE...</div>
       <div class="loader-progress-container">
         <span class="progress-decor">//</span>
@@ -30,37 +30,43 @@
   </div>
 
   <canvas class="constellation__canvas" data-graph-canvas aria-hidden="true"></canvas>
-  <svg class="constellation__lines" data-graph-lines style="position: absolute; inset: 0; pointer-events: none; z-index: 2; width: 100%; height: 100%;"></svg>
+  <svg class="constellation__lines" data-graph-lines
+    style="position: absolute; inset: 0; pointer-events: none; z-index: 2; width: 100%; height: 100%;"></svg>
 
   <div class="constellation__overlay">
     <div class="constellation__intro reveal">
-      <span class="constellation__eyebrow"><span class="constellation__eyebrow-dot"></span> DATABASE SYSTEM v2.08 &middot; ACTIVE SIMULATION</span>
-      <h1 class="constellation__title">I am <br><span class="glitch-text" data-glitch-target>a renaissance engineer</span>.</h1>
-      <p class="constellation__lede">An interactive archive of my thoughts, projects, and designs. Scroll down to initialize the database timeline.</p>
+      <span class="constellation__eyebrow"><span class="constellation__eyebrow-dot"></span> PRATHAMESH PATIL
+        &middot; SOFTWARE ENGINEER</span>
+      <h1 class="constellation__title">I am <br><span class="glitch-text" data-glitch-target>a software
+          engineer</span>.</h1>
+      <p class="constellation__lede">An archive of my blogs, projects, and designs. Scroll down to see more.</p>
       <div class="constellation__cta">
-        <a class="btn btn--primary" href="{{ '/blog/' | relative_url }}">Browse as a list {% include icon.html name="arrow" %}</a>
+        <a class="btn btn--primary" href="{{ '/blog/' | relative_url }}">Browse as a list {% include icon.html
+          name="arrow" %}</a>
       </div>
     </div>
-    
+
     <button class="btn btn--ghost constellation__recenter-btn" type="button" data-graph-reset>
       Recenter map
     </button>
   </div>
 
   <div class="constellation__menu" data-graph-menu>
-    <div class="menu-header">// INDEX // DATA ARCHIVES</div>
+    <div class="menu-header">// INDEX</div>
     <div class="menu-list">
       {%- for post in site.posts -%}
-        <button class="menu-item" type="button" data-menu-index="{{ forloop.index0 }}">
-          <span class="menu-item-decor"></span>
-          <div class="menu-item-content" style="display: flex; flex-direction: column; width: 100%; text-align: left;">
-            <div class="menu-item-top" style="display: flex; align-items: center; gap: 0.8rem; width: 100%;">
-              <span class="menu-item-num">0{{ forloop.index }}</span>
-              <span class="menu-item-label" style="flex-grow: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-family: var(--font-logo); font-size: 0.82rem; letter-spacing: 0.08em; text-transform: uppercase;">{{ post.title }}</span>
-            </div>
-            <div class="menu-item-preview">{{ post.excerpt | strip_html | truncate: 80 }}</div>
+      <button class="menu-item" type="button" data-menu-index="{{ forloop.index0 }}">
+        <span class="menu-item-decor"></span>
+        <div class="menu-item-content" style="display: flex; flex-direction: column; width: 100%; text-align: left;">
+          <div class="menu-item-top" style="display: flex; align-items: center; gap: 0.8rem; width: 100%;">
+            <span class="menu-item-num">0{{ forloop.index }}</span>
+            <span class="menu-item-label"
+              style="flex-grow: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-family: var(--font-logo); font-size: 0.82rem; letter-spacing: 0.08em; text-transform: uppercase;">{{
+              post.title }}</span>
           </div>
-        </button>
+          <div class="menu-item-preview">{{ post.excerpt | strip_html | truncate: 80 }}</div>
+        </div>
+      </button>
       {%- endfor -%}
     </div>
   </div>
@@ -69,10 +75,6 @@
     <div class="details-card">
       <div class="details-image-container" data-details-image-container></div>
       <div class="details-body">
-        <div class="details-telemetry">
-          <span class="telemetry-label">// STAR NODE TELEMETRY ACTIVE //</span>
-          <span class="telemetry-coords" data-details-coords>COORD: [0, 0, 0]</span>
-        </div>
         <span class="details-date"></span>
         <h2 class="details-title"></h2>
         <p class="details-excerpt"></p>
@@ -87,21 +89,14 @@
   <div class="constellation__sidebar reveal">
     <div class="sidebar-links">
       {%- for s in site.data.social -%}
-        {%- if s.url and s.url != "" -%}
-          <a class="sidebar-item" href="{{ s.url }}" target="_blank" rel="noopener">{{ s.name }}</a>
-          {%- unless forloop.last -%}<span class="sidebar-line"></span>{%- endunless -%}
-        {%- endif -%}
+      {%- if s.url and s.url != "" -%}
+      <a class="sidebar-item" href="{{ s.url }}" target="_blank" rel="noopener">{{ s.name }}</a>
+      {%- unless forloop.last -%}<span class="sidebar-line"></span>{%- endunless -%}
+      {%- endif -%}
       {%- endfor -%}
     </div>
   </div>
 
-  <div class="constellation__hud">
-    <div class="constellation__legend">
-      <span class="constellation__legend-item"><span class="constellation__swatch constellation__swatch--post"></span> Post</span>
-      <span class="constellation__legend-item"><span class="constellation__swatch constellation__swatch--tag"></span> Topic</span>
-    </div>
-    <div class="constellation__hint" data-graph-hint>drag &middot; scroll &middot; click</div>
-  </div>
 
   <div class="constellation__tooltip" data-graph-tooltip hidden></div>
 

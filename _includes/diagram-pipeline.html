@@ -1,20 +1,22 @@
 {%- comment -%} Self-drawing "publish pipeline" diagram. Drop into any post. {%- endcomment -%}
 <figure class="diagram">
-  <svg viewBox="0 0 820 170" role="img" aria-label="Publishing pipeline: write Markdown, push to Git, GitHub Actions builds, GitHub Pages serves to readers." data-draw xmlns="http://www.w3.org/2000/svg">
+  <svg viewBox="0 0 820 170" role="img"
+    aria-label="Publishing pipeline: write Markdown, push to Git, GitHub Actions builds, GitHub Pages serves to readers."
+    data-draw xmlns="http://www.w3.org/2000/svg">
     <g class="diagram__boxes">
-      <rect x="8"   y="54" width="160" height="62" rx="12"/>
-      <rect x="228" y="54" width="160" height="62" rx="12"/>
-      <rect x="448" y="54" width="160" height="62" rx="12"/>
-      <rect x="652" y="54" width="160" height="62" rx="12"/>
+      <rect x="8" y="54" width="160" height="62" rx="12" />
+      <rect x="228" y="54" width="160" height="62" rx="12" />
+      <rect x="448" y="54" width="160" height="62" rx="12" />
+      <rect x="652" y="54" width="160" height="62" rx="12" />
     </g>
     <g class="diagram__arrows">
-      <path d="M168 85 H228" marker-end="url(#arrow)"/>
-      <path d="M388 85 H448" marker-end="url(#arrow)"/>
-      <path d="M608 85 H652" marker-end="url(#arrow)"/>
+      <path d="M168 85 H228" marker-end="url(#arrow)" />
+      <path d="M388 85 H448" marker-end="url(#arrow)" />
+      <path d="M608 85 H652" marker-end="url(#arrow)" />
     </g>
     <g class="diagram__labels">
-      <text x="88"  y="80" data-fade text-anchor="middle">git add post.md</text>
-      <text x="88"  y="100" data-fade text-anchor="middle" class="diagram__sub">_posts/</text>
+      <text x="88" y="80" data-fade text-anchor="middle">git add post.md</text>
+      <text x="88" y="100" data-fade text-anchor="middle" class="diagram__sub">_posts/</text>
       <text x="308" y="80" data-fade text-anchor="middle">git push</text>
       <text x="308" y="100" data-fade text-anchor="middle" class="diagram__sub">→ main</text>
       <text x="528" y="80" data-fade text-anchor="middle">Actions build</text>
@@ -23,10 +25,11 @@
       <text x="732" y="100" data-fade text-anchor="middle" class="diagram__sub">readers 🎉</text>
     </g>
     <defs>
-      <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-        <path d="M0 0 L10 5 L0 10 z" class="diagram__head"/>
+      <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7"
+        orient="auto-start-reverse">
+        <path d="M0 0 L10 5 L0 10 z" class="diagram__head" />
       </marker>
     </defs>
   </svg>
-  <figcaption>The entire publishing flow — push a Markdown file, the rest is automatic.</figcaption>
+  <figcaption>The entire publishing flow, push a Markdown file, the rest is automatic.</figcaption>
 </figure>

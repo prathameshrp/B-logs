@@ -84,38 +84,79 @@
   var guideGrid = new THREE.LineSegments(gridGeom, gridMat);
   scene.add(guideGrid);
 
-  // ── AC2 Background Mahal Silhouette & Data ──────────────────────
+  // ── AC2 Background: Chand Bibi Mahal Silhouette + Stack Database Columns ──────
   var backgroundGroup = new THREE.Group();
   scene.add(backgroundGroup);
 
   var baseUrl = section.getAttribute('data-baseurl') || '/';
   if (!baseUrl.endsWith('/')) baseUrl += '/';
-  
+
+  // ── Chand Bibi Mahal silhouette (transparent PNG) ──────────────────────────
   var textureLoader = new THREE.TextureLoader();
-  textureLoader.load(baseUrl + 'assets/img/mahal.jpg', function(texture) {
-    // Determine image aspect ratio and create a plane (e.g. roughly 16:9 or 4:3)
-    var mahalGeom = new THREE.PlaneGeometry(800, 500);
-    // Dark silhouette material
+  textureLoader.load(baseUrl + 'assets/img/mahal-silhouette.png', function(texture) {
+    texture.colorSpace = THREE.SRGBColorSpace;
+    // Wide panoramic plane matching the silhouette aspect ratio (~2:1)
+    var mahalGeom = new THREE.PlaneGeometry(1000, 500);
+    var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
     var mahalMat = new THREE.MeshBasicMaterial({
       map: texture,
       transparent: true,
-      opacity: 0.22, // dim like a ghost
-      blending: THREE.MultiplyBlending,
-      color: new THREE.Color(0x33261a) // dark brownish tint to match the site's palette
+      opacity: isDark ? 0.18 : 0.28,
+      depthWrite: false,
+      // Use NormalBlending so the transparent PNG alpha actually works
+      blending: THREE.NormalBlending
     });
-    // On dark mode, use an additive or different blend if preferred, but multiply on dark might be invisible.
-    if (document.documentElement.getAttribute('data-theme') === 'dark') {
-      mahalMat.blending = THREE.AdditiveBlending;
-      mahalMat.color = new THREE.Color(0x443525);
-      mahalMat.opacity = 0.12;
-    }
-    
     var mahalMesh = new THREE.Mesh(mahalGeom, mahalMat);
-    // Position deep in background
-    mahalMesh.position.set(0, 50, -350);
+    // Position at the bottom-center of the scene, deep in background
+    mahalMesh.position.set(0, -30, -280);
     backgroundGroup.add(mahalMesh);
   });
 
+  // ── 35 Database Stack Slat Columns (restored) ─────────────────────────────
+  var bgSlatGeom = new THREE.BoxGeometry(45, 1.4, 8);
+  var colConfigs = [];
+  for (var c = 0; c < 35; c++) {
+    colConfigs.push({
+      x: (Math.random() - 0.5) * 650,
+      z: -100 - Math.random() * 280,
+      yOffset: (Math.random() - 0.5) * 140,
+      count: Math.floor(Math.random() * 12) + 20 // 20 to 32 slats tall
+    });
+  }
+
+  var isDarkTheme = document.documentElement.getAttribute('data-theme') === 'dark';
+  var initialBgColor = isDarkTheme ? 0xffffff : 0x8c826c;
+
+  colConfigs.forEach(function(cfg) {
+    var colGroup = new THREE.Group();
+    colGroup.position.set(cfg.x, cfg.yOffset, cfg.z);
+
+    var dy = 13.5;
+    var colAngle = Math.random() * Math.PI;
+    for (var i = 0; i < cfg.count; i++) {
+      var bgMat = new THREE.MeshStandardMaterial({
+        color: new THREE.Color(initialBgColor),
+        transparent: true,
+        opacity: 0.28,
+        roughness: 0.5,
+        metalness: 0.1
+      });
+      var bgMesh = new THREE.Mesh(bgSlatGeom, bgMat);
+
+      // Boundary chaos for off-screen drift
+      var distFromCenter = Math.abs(i - cfg.count / 2);
+      var factor = Math.pow(distFromCenter / (cfg.count / 2), 1.6);
+      var chaosX = Math.sin(i * 0.6) * factor * 26;
+      var chaosZ = Math.cos(i * 0.6) * factor * 26;
+
+      bgMesh.position.set(chaosX, (i - cfg.count / 2) * dy, chaosZ);
+      bgMesh.rotation.set(0.12, colAngle + i * 0.03 + Math.PI / 2 + factor * 0.55, 0.04);
+      colGroup.add(bgMesh);
+    }
+    backgroundGroup.add(colGroup);
+  });
+
+  // ── Floating Stack / Stats Text Sprites ───────────────────────────────────
   var homeDataEl = document.getElementById('home-data');
   var homeData = null;
   if (homeDataEl) {
@@ -128,7 +169,7 @@
       homeData.stack.forEach(function(skill) { floatingTexts.push(skill); });
     }
     if (homeData.stats) {
-      homeData.stats.forEach(function(s) { floatingTexts.push(s.value + s.suffix + " " + s.label); });
+      homeData.stats.forEach(function(s) { floatingTexts.push(s.value + s.suffix + ' ' + s.label); });
     }
   }
 
@@ -144,10 +185,9 @@
     ctx.fillStyle = cssVar('--text-mute', '#8c826c');
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    ctx.fillText(text, canvas.width/2, canvas.height/2);
-
+    ctx.fillText(text, canvas.width / 2, canvas.height / 2);
     var tex = new THREE.CanvasTexture(canvas);
-    var spriteMat = new THREE.SpriteMaterial({ map: tex, transparent: true, opacity: 0.8 });
+    var spriteMat = new THREE.SpriteMaterial({ map: tex, transparent: true, opacity: 0.75 });
     var sprite = new THREE.Sprite(spriteMat);
     sprite.scale.set(canvas.width / 4, canvas.height / 4, 1);
     return sprite;
@@ -155,12 +195,11 @@
 
   floatingTexts.forEach(function(txt, i) {
     var sprite = createTextSprite(txt, 32);
-    // Distribute in a cylinder around the mahal
     var angle = (i / floatingTexts.length) * Math.PI * 2;
-    var radius = 280 + Math.random() * 80;
-    var yOffset = (Math.random() - 0.5) * 250;
-    sprite.position.set(Math.cos(angle) * radius, yOffset, -350 + Math.sin(angle) * radius);
-    sprite.userData = { angle: angle, radius: radius, speed: 0.0005 + Math.random() * 0.001, yOffset: yOffset };
+    var radius = 200 + Math.random() * 80;
+    var yOffset = (Math.random() - 0.5) * 180;
+    sprite.position.set(Math.cos(angle) * radius, yOffset, -200 + Math.sin(angle) * radius);
+    sprite.userData = { angle: angle, radius: radius, speed: 0.0004 + Math.random() * 0.0008, yOffset: yOffset };
     backgroundGroup.add(sprite);
     dataSprites.push(sprite);
   });

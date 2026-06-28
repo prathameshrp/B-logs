@@ -116,6 +116,13 @@
     </div>
   </noscript>
 
+  <script id="home-data" type="application/json">
+  {
+    "stack": {{ site.data.home.stack | jsonify }},
+    "stats": {{ site.data.home.stats | jsonify }}
+  }
+  </script>
+
   <script id="graph-data" type="application/json">
   {
     "nodes": [

@@ -3,7 +3,7 @@ title: Virtual Try-On
 description: Real-time clothing overlay using pose landmark detection, running live from a webcam feed in the browser.
 order: 3
 tech: [Python, Flask, MediaPipe, OpenCV, Node.js, Express]
-url: https://github.com/prathameshrp
+url: https://github.com/prathameshrp/virtual-tryon
 url_live: ""
 ---
 

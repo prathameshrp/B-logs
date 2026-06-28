@@ -76,4 +76,4 @@ the overlay. The pose pipeline doesn't need to change at all for that.
 The repo is open if you want to drop in your own clothing images and play with
 the multipliers.
 
-👉 **[github.com/prathameshrp](https://github.com/prathameshrp)**
+👉 **[github.com/prathameshrp](https://github.com/prathameshrp/virtual-tryon)**

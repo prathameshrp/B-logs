@@ -1,6 +1,6 @@
 ---
 title: "Introducing Raphael: The Sardonic ADHD Advisor Inside Your Desktop HUD"
-date: 2026-06-29 10:00:00 +0530
+date: 2026-06-22 10:00:00 +0530
 tags: [KDE, Plasma, Python, AI, Productivity]
 excerpt: "A cockpit-style HUD widget for KDE Plasma that acts as an aggressive, sardonically supportive ADHD cognitive advisor."
 cover: /assets/img/raphael-hud.png

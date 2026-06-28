@@ -12,15 +12,19 @@
 <section class="constellation" data-graph-section>
   <div class="constellation__loader" data-graph-loader>
     <div class="loader-content">
-      <div class="loader-galaxy">
-        <div class="loader-ring loader-ring--1"></div>
-        <div class="loader-ring loader-ring--2"></div>
-        <div class="loader-ring loader-ring--3"></div>
-        <div class="loader-star"></div>
+      <div class="animus-sync-logo">
+        <div class="diamond-pulse-outer"></div>
+        <div class="diamond-pulse-inner"></div>
+        <div class="diamond-center">◇</div>
       </div>
-      <div class="loader-text">Initializing Constellation...</div>
-      <div class="loader-track">
-        <div class="loader-bar"></div>
+      <div class="loader-hud-label">// ANIMUS SYNC SIMULATOR v2.08 //</div>
+      <div class="loader-hud-sub" data-loader-status>ACCESSING MEMORY CORE...</div>
+      <div class="loader-progress-container">
+        <span class="progress-decor">//</span>
+        <div class="loader-bar-outer">
+          <div class="loader-bar-fill" data-loader-bar></div>
+        </div>
+        <span class="loader-pct" data-loader-pct>0%</span>
       </div>
     </div>
   </div>
@@ -46,8 +50,13 @@
       {%- for post in site.posts -%}
         <button class="menu-item" type="button" data-menu-index="{{ forloop.index0 }}">
           <span class="menu-item-decor"></span>
-          <span class="menu-item-num">0{{ forloop.index }}</span>
-          <span class="menu-item-label">{{ post.title }}</span>
+          <div class="menu-item-content" style="display: flex; flex-direction: column; width: 100%; text-align: left;">
+            <div class="menu-item-top" style="display: flex; align-items: center; gap: 0.8rem; width: 100%;">
+              <span class="menu-item-num">0{{ forloop.index }}</span>
+              <span class="menu-item-label" style="flex-grow: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-family: var(--font-logo); font-size: 0.82rem; letter-spacing: 0.08em; text-transform: uppercase;">{{ post.title }}</span>
+            </div>
+            <div class="menu-item-preview">{{ post.excerpt | strip_html | truncate: 80 }}</div>
+          </div>
         </button>
       {%- endfor -%}
     </div>
@@ -65,7 +74,6 @@
       <div class="details-tags"></div>
       <div class="details-actions">
         <a class="btn btn--primary details-link" href="#">Read Full Post {% include icon.html name="arrow" %}</a>
-        <button class="btn btn--ghost details-next" type="button">Next Milestone &rarr;</button>
       </div>
     </div>
   </div>

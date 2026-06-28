@@ -89,14 +89,16 @@
   scene.add(backgroundGroup);
 
   var bgSlatGeom = new THREE.BoxGeometry(45, 1.4, 8);
-  var colConfigs = [
-    { x: -140, z: -150, yOffset: -50, count: 18 },
-    { x: -80,  z: -210, yOffset: 30,  count: 15 },
-    { x: 90,   z: -180, yOffset: -20, count: 16 },
-    { x: 160,  z: -230, yOffset: 40,  count: 15 },
-    { x: -200, z: -270, yOffset: -30, count: 14 },
-    { x: 220,  z: -250, yOffset: 10,  count: 15 }
-  ];
+  var colConfigs = [];
+  // Stack 35 database timeline columns in the background to look like a massive mainframe rack
+  for (var c = 0; c < 35; c++) {
+    colConfigs.push({
+      x: (Math.random() - 0.5) * 650,
+      z: -100 - Math.random() * 280,
+      yOffset: (Math.random() - 0.5) * 140,
+      count: Math.floor(Math.random() * 12) + 20 // 20 to 32 slats tall!
+    });
+  }
 
   var isDarkTheme = document.documentElement.getAttribute('data-theme') === 'dark';
   var initialBgColor = isDarkTheme ? 0xffffff : 0x8c826c;
@@ -105,19 +107,27 @@
     var colGroup = new THREE.Group();
     colGroup.position.set(cfg.x, cfg.yOffset, cfg.z);
     
-    var dy = 14;
+    var dy = 13.5;
     var colAngle = Math.random() * Math.PI;
     for (var i = 0; i < cfg.count; i++) {
       var bgMat = new THREE.MeshStandardMaterial({
         color: new THREE.Color(initialBgColor),
         transparent: true,
-        opacity: 0.055, // faint Animus background slats
+        opacity: 0.28, // highly visible background simulation slats
         roughness: 0.5,
         metalness: 0.1
       });
       var bgMesh = new THREE.Mesh(bgSlatGeom, bgMat);
-      bgMesh.position.set(0, (i - cfg.count / 2) * dy, 0);
-      bgMesh.rotation.set(0.12, colAngle + i * 0.03 + Math.PI / 2, 0.04);
+      
+      // Calculate boundary chaos for off-screen drift
+      var distFromCenter = Math.abs(i - cfg.count / 2);
+      var factor = Math.pow(distFromCenter / (cfg.count / 2), 1.6); // zero at middle, high at top/bottom
+      var chaosX = Math.sin(i * 0.6) * factor * 26;
+      var chaosZ = Math.cos(i * 0.6) * factor * 26;
+
+      bgMesh.position.set(chaosX, (i - cfg.count / 2) * dy, chaosZ);
+      // Twist slats more dynamically as they drift off screen
+      bgMesh.rotation.set(0.12, colAngle + i * 0.03 + Math.PI / 2 + factor * 0.55, 0.04);
       colGroup.add(bgMesh);
     }
     backgroundGroup.add(colGroup);
@@ -602,22 +612,50 @@
     setInterval(triggerGlitch, 3500);
   }
 
-  // Render Loop
-  var running = true;
-  var warmUpFrames = 45;
-  function animate() {
-    if (!running) return;
-
-    if (warmUpFrames > 0) {
-      warmUpFrames--;
-      if (warmUpFrames === 0) {
-        var loaderEl = document.querySelector('[data-graph-loader]');
-        if (loaderEl) {
+  // ── Animus Loading Progress Driver ──────────────────────────
+  var loaderEl = document.querySelector('[data-graph-loader]');
+  var loaderBar = document.querySelector('[data-loader-bar]');
+  var loaderPct = document.querySelector('[data-loader-pct]');
+  var loaderStatus = document.querySelector('[data-loader-status]');
+  
+  if (loaderEl && loaderBar && loaderPct) {
+    document.documentElement.classList.add('animus-loading');
+    var pct = 0;
+    var statusPhrases = [
+      "ACCESSING MEMORY CORE...",
+      "RETRIEVING DATA STRANDS...",
+      "SYNCHRONIZING SIMULATION...",
+      "COMPILING SHARD GRAPH...",
+      "SYSTEM DECRYPTION SYNCED"
+    ];
+    
+    var progressInterval = setInterval(function () {
+      pct += Math.floor(Math.random() * 4) + 3; // increments by 3-6%
+      if (pct >= 100) {
+        pct = 100;
+        clearInterval(progressInterval);
+        if (loaderStatus) loaderStatus.textContent = statusPhrases[statusPhrases.length - 1];
+        
+        setTimeout(function () {
           loaderEl.classList.add('fade-out');
+          document.documentElement.classList.remove('animus-loading');
           setTimeout(function() { loaderEl.style.display = 'none'; }, 600);
+        }, 300);
+      } else {
+        loaderBar.style.width = pct + "%";
+        loaderPct.textContent = pct + "%";
+        if (loaderStatus) {
+          var phraseIdx = Math.min(Math.floor((pct / 100) * (statusPhrases.length - 1)), statusPhrases.length - 2);
+          loaderStatus.textContent = statusPhrases[phraseIdx];
         }
       }
-    }
+    }, 38);
+  }
+
+  // Render Loop
+  var running = true;
+  function animate() {
+    if (!running) return;
 
     // Slowly rotate/swivel inactive slats to keep universe breathing
     var time = Date.now() * 0.0004;
@@ -629,11 +667,11 @@
         targetScale = 1.30; // highlight scale
         targetOffsetX = Math.sin(p.timelineAngle) * 16;
         targetOffsetZ = Math.cos(p.timelineAngle) * 16;
-        p.mesh.rotation.y += 0.005;
-      } else {
-        // breathing rotation
-        p.mesh.rotation.y = p.timelineAngle + Math.PI / 2 + Math.sin(time + p.timelineY * 0.03) * 0.05;
       }
+
+      // Follow cursor parallax swivels and remain static (like a database rack) without auto-spinning
+      p.mesh.rotation.y = p.timelineAngle + Math.PI / 2 + pointerParallax.x * 0.18;
+      p.mesh.rotation.x = 0.12 + pointerParallax.y * 0.18;
 
       // Smooth slide interpolation
       p.mesh.position.x += ((p.x + targetOffsetX) - p.mesh.position.x) * 0.08;

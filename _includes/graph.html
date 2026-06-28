@@ -10,6 +10,21 @@
 {%- assign all_tags = all_tags | uniq | sort -%}
 
 <section class="constellation" data-graph-section>
+  <div class="constellation__loader" data-graph-loader>
+    <div class="loader-content">
+      <div class="loader-galaxy">
+        <div class="loader-ring loader-ring--1"></div>
+        <div class="loader-ring loader-ring--2"></div>
+        <div class="loader-ring loader-ring--3"></div>
+        <div class="loader-star"></div>
+      </div>
+      <div class="loader-text">Initializing Constellation...</div>
+      <div class="loader-track">
+        <div class="loader-bar"></div>
+      </div>
+    </div>
+  </div>
+
   <canvas class="constellation__canvas" data-graph-canvas aria-hidden="true"></canvas>
 
   <div class="constellation__overlay">
@@ -20,6 +35,19 @@
       <div class="constellation__cta">
         <a class="btn btn--primary" href="{{ '/blog/' | relative_url }}">Browse as a list {% include icon.html name="arrow" %}</a>
         <button class="btn btn--ghost" type="button" data-graph-reset>Recenter map</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="constellation__details" data-graph-details hidden>
+    <div class="details-card">
+      <span class="details-date"></span>
+      <h2 class="details-title"></h2>
+      <p class="details-excerpt"></p>
+      <div class="details-tags"></div>
+      <div class="details-actions">
+        <a class="btn btn--primary details-link" href="#">Read Full Post {% include icon.html name="arrow" %}</a>
+        <button class="btn btn--ghost details-next" type="button">Next Milestone &rarr;</button>
       </div>
     </div>
   </div>
@@ -49,7 +77,7 @@
   {
     "nodes": [
       {%- for post in site.posts -%}
-      {"id":"post-{{ forloop.index }}","type":"post","label":{{ post.title | jsonify }},"url":{{ post.url | relative_url | jsonify }},"date":{{ post.date | date: "%b %-d, %Y" | jsonify }},"tags":{{ post.tags | jsonify }},"weight":{{ post.tags | size }}}{%- unless forloop.last -%},{%- endunless -%}
+      {"id":"post-{{ forloop.index }}","type":"post","label":{{ post.title | jsonify }},"url":{{ post.url | relative_url | jsonify }},"date":{{ post.date | date: "%b %-d, %Y" | jsonify }},"tags":{{ post.tags | jsonify }},"weight":{{ post.tags | size }},"excerpt":{{ post.excerpt | jsonify }}}{%- unless forloop.last -%},{%- endunless -%}
       {%- endfor -%}
       {%- if all_tags.size > 0 and site.posts.size > 0 -%},{%- endif -%}
       {%- for t in all_tags -%}

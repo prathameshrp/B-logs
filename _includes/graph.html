@@ -37,10 +37,40 @@
         <button class="btn btn--ghost" type="button" data-graph-reset>Recenter map</button>
       </div>
     </div>
+
+    <div class="constellation__about" data-graph-about>
+      <div class="about-card">
+        <div class="about-telemetry">// DOSSIER SYSTEM // USER_PROFILE ACTIVE</div>
+        {%- assign about_page = site.html_pages | where: "url", "/about/" | first -%}
+        {%- if about_page -%}
+          <div class="about-content prose">
+            {{ about_page.content | markdownify }}
+          </div>
+        {%- endif -%}
+        <div class="about-footer">
+          <div class="about-footer-social">
+            {%- for s in site.data.social -%}
+              {%- if s.url and s.url != "" -%}
+                <a href="{{ s.url }}" class="icon-btn" aria-label="{{ s.name }}" target="_blank" rel="noopener">
+                  {% include icon.html name=s.icon %}
+                </a>
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+          <div class="about-footer-copyright">
+            &copy; {{ 'now' | date: "%Y" }} {{ site.author.name }}.
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
-  <div class="constellation__details" data-graph-details hidden>
+  <div class="constellation__details" data-graph-details>
     <div class="details-card">
+      <div class="details-telemetry">
+        <span class="telemetry-label">// STAR NODE TELEMETRY ACTIVE //</span>
+        <span class="telemetry-coords" data-details-coords>COORD: [0, 0, 0]</span>
+      </div>
       <span class="details-date"></span>
       <h2 class="details-title"></h2>
       <p class="details-excerpt"></p>

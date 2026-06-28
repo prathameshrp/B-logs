@@ -359,12 +359,13 @@
   var detailsTags = detailsPanel ? detailsPanel.querySelector('.details-tags') : null;
   var detailsLink = detailsPanel ? detailsPanel.querySelector('.details-link') : null;
   var detailsNext = detailsPanel ? detailsPanel.querySelector('.details-next') : null;
+  var detailsCoords = detailsPanel ? detailsPanel.querySelector('[data-details-coords]') : null;
 
   var currentActivePost = null;
 
   function showDetailsForPost(post) {
     if (!post) {
-      if (detailsPanel) detailsPanel.hidden = true;
+      if (detailsPanel) detailsPanel.classList.remove('is-visible');
       currentActivePost = null;
       return;
     }
@@ -372,11 +373,14 @@
     currentActivePost = post;
 
     if (detailsPanel) {
-      detailsPanel.hidden = false;
+      detailsPanel.classList.add('is-visible');
       if (detailsTitle) detailsTitle.textContent = post.label;
       if (detailsDate) detailsDate.textContent = post.date || '';
       if (detailsExcerpt) detailsExcerpt.textContent = post.excerpt || '';
       if (detailsLink) detailsLink.href = post.url;
+      if (detailsCoords) {
+        detailsCoords.textContent = 'COORD: [' + Math.round(post.x) + ', ' + Math.round(post.y) + ', ' + Math.round(post.z) + ']';
+      }
       if (detailsTags) {
         detailsTags.innerHTML = '';
         (post.tags || []).forEach(function (tag) {
@@ -398,7 +402,7 @@
       var nextIdx = (idx + 1) % postsList.length;
       var nextPost = postsList[nextIdx];
       if (nextPost) {
-        var progress = 0.12 + (nextIdx / postsList.length) * 0.88;
+        var progress = 0.12 + (nextIdx / postsList.length) * 0.76;
         var wrapper = document.getElementById('timeline-wrapper');
         if (wrapper) {
           var trackHeight = wrapper.offsetHeight - window.innerHeight;
@@ -415,6 +419,8 @@
   window.graph = {
     setCameraFromScroll: function(progress) {
       var postsList = nodes.filter(function (n) { return n.type === 'post'; });
+      var aboutEl = document.querySelector('[data-graph-about]');
+      
       if (progress < 0.12) {
         // Intro state - center map
         targetCameraTarget.set(0, 0, 0);
@@ -422,9 +428,40 @@
         targetPhi = 0.2;
         targetRadius = W < 700 ? 550 : 420;
         showDetailsForPost(null);
+        
+        if (aboutEl) {
+          aboutEl.classList.remove('is-visible');
+          aboutEl.style.opacity = 0;
+          aboutEl.style.transform = 'translate(-50%, calc(-50% + 40px))';
+        }
+      } else if (progress > 0.88) {
+        // About state - pan camera out, hide details card, show About card
+        targetCameraTarget.set(0, 0, 0);
+        targetTheta = (progress - 0.88) * Math.PI * 0.4; // slowly rotate the galaxy
+        targetPhi = 0.22;
+        targetRadius = W < 700 ? 600 : 480; // zoom out slightly
+        showDetailsForPost(null);
+        
+        if (aboutEl) {
+          aboutEl.classList.add('is-visible');
+          var aboutFade = (progress - 0.88) / 0.12;
+          aboutFade = Math.max(0, Math.min(1, aboutFade));
+          aboutEl.style.opacity = aboutFade;
+          var ty = (1 - aboutFade) * 45;
+          aboutEl.style.transform = 'translate(-50%, calc(-50% + ' + ty + 'px))';
+          aboutEl.style.pointerEvents = aboutFade > 0.05 ? 'auto' : 'none';
+        }
       } else {
         // Active timeline state - focus on the current node
-        var subProgress = (progress - 0.12) / 0.88;
+        if (aboutEl) {
+          aboutEl.classList.remove('is-visible');
+          aboutEl.style.opacity = 0;
+          aboutEl.style.transform = 'translate(-50%, calc(-50% + 40px))';
+          aboutEl.style.pointerEvents = 'none';
+        }
+        
+        var subProgress = (progress - 0.12) / 0.76; // map 0.12 -> 0.88 to 0.0 -> 1.0
+        subProgress = Math.max(0, Math.min(1, subProgress));
         var idx = Math.min(Math.floor(subProgress * postsList.length), postsList.length - 1);
         var post = postsList[idx];
         if (post) {
@@ -438,7 +475,7 @@
           targetPos.z -= rightZ * 90;
  
           targetCameraTarget.copy(targetPos);
-          targetRadius = 140; // Zoom in closer for large sphere effect
+          targetRadius = 140; // Zoom in closer
           targetTheta = post.timelineAngle + Math.PI / 4;
           targetPhi = 0.15;
         }
@@ -585,7 +622,7 @@
             flightNode = hoverNode;
           } else {
             // Scroll to the post's progress index to focus it
-            var progress = 0.12 + (idx / postsList.length) * 0.88;
+            var progress = 0.12 + (idx / postsList.length) * 0.76;
             var wrapper = document.getElementById('timeline-wrapper');
             if (wrapper) {
               var trackHeight = wrapper.offsetHeight - window.innerHeight;

@@ -5,18 +5,19 @@
   function onScroll(){
     var progress = 0;
     if (wrapper) {
-      var rect = wrapper.getBoundingClientRect();
+      var scrollTop = window.scrollY || document.documentElement.scrollTop;
       var trackHeight = wrapper.offsetHeight - window.innerHeight;
-      progress = trackHeight > 0 ? -rect.top / trackHeight : 0;
+      progress = trackHeight > 0 ? scrollTop / trackHeight : 0;
       progress = Math.max(0, Math.min(1, progress));
     }
     if (window.graph && typeof window.graph.setCameraFromScroll === 'function') {
         window.graph.setCameraFromScroll(progress);
         var intro = document.querySelector('.constellation__intro');
         if (intro) {
-            var scale = Math.max(0, 1 - (progress * 1.5));
-            var tz = progress * -500;
-            var opacity = Math.max(0, 1 - (progress * 2.2));
+            var fadeProgress = Math.min(1, progress / 0.08);
+            var scale = 1 - (fadeProgress * 0.12);
+            var tz = fadeProgress * -600;
+            var opacity = 1 - fadeProgress;
             intro.style.setProperty('--intro-scale', scale);
             intro.style.setProperty('--intro-translate-z', tz + 'px');
             intro.style.opacity = opacity;

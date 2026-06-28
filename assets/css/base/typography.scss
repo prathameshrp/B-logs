@@ -67,7 +67,7 @@ a.chip:hover, .chip:hover { transform: translateY(-2px); border-color: var(--bor
   
   h2 + p, h3 + p { margin-top: .9rem; }
 
-  a {
+  a:not(.btn):not(.chip):not(.icon-btn) {
     color: var(--accent-2);
     text-decoration: underline;
     text-underline-offset: 4px;
